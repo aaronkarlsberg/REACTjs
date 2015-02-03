@@ -31,6 +31,16 @@ app.post('/laters', function (req, res) {
   });
 })
 
+app.post('/laters/tags', function (req, res) {
+  fb.child(req.body.name+'/tags').push(req.body.tag, function(error) {
+    if (error) {
+      res.send('Failure');
+    } else {
+      res.send('Success');
+    }
+  });
+});
+
 var server = app.listen(3000, function () {
   var host = server.address().address
   var port = server.address().port

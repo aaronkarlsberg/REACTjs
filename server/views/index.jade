@@ -15,6 +15,9 @@ html
         td POST /laters, params: name and url
         td Create a new read it later
       
+      tr
+        td POST /laters/tags, params: name of later and tag
+        td Create a new tag for a read it later
     
     p Test form
     
@@ -22,3 +25,8 @@ html
       input(type="text", name="name", placeholder="Name")
       input(type="url", name="url", placeholder="URL")
       input(type="submit", value="Read it later")
+    
+    form(name="laters", action="/laters/tags", method="post")
+      input(type="text", name="name", placeholder="Name")
+      input(type="text", name="tag", placeholder="Tag")
+      input(type="submit", value="Add Tag")
