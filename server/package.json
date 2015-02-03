@@ -1,0 +1,25 @@
+{
+  "name": "react-backbone-server",
+  "version": "1.0.0",
+  "description": "API server for react and backbone workshop",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DBC-Deploy/react-backbone-workshop"
+  },
+  "author": "Ed Shadi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DBC-Deploy/react-backbone-workshop/issues"
+  },
+  "homepage": "https://github.com/DBC-Deploy/react-backbone-workshop",
+  "dependencies": {
+    "express": "^4.11.2",
+    "firebase": "^2.1.2",
+    "jade": "^1.9.1",
+    "nodemon": "^1.3.6"
+  }
+}
