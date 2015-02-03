@@ -2,22 +2,32 @@ var express = require('express')
 var app = express()
 var Firebase = require('firebase')
 var fb = new Firebase('https://backbonereact.firebaseio.com/')
+var bodyParser = require('body-parser')
+
+app.use(bodyParser());
 
 app.set('view engine', 'jade');
+
 
 app.get('/', function (req, res) {
   res.render('index');
 })
-app.get('/:user', function (req, res) {
-  fb.child(req.params.user).once('value', function(snapshot) {
+app.get('/laters', function (req, res) {
+  fb.once('value', function(snapshot) {
     res.send(snapshot.val());
   });
-  // console.log(req.params)
-  res.send(req.params)
 })
-app.post('/', function (req, res) {
-  fb.set('value', function(snapshot) {
-    res.send(snapshot.val());
+app.post('/laters', function (req, res) {
+  var data = {};
+  data[req.body.name] = {
+    url: req.body.url
+  };
+  fb.update(data, function(error) {
+    if (error) {
+      res.send('Failure');
+    } else {
+      res.send('Success');
+    }
   });
 })
 

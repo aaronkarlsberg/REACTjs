@@ -4,14 +4,21 @@ html
   body
     h1 React & Backbone Workshop
     
-    p All of your API requests should be done over your github username
+    p All of your API requests should be done over your firebase url
     
     table
       tr
-        td GET /:githubUsername (e.g. /edshadi):
-        td Create new read it later
+        td GET /laters
+        td All of your read it laters
         
       tr
-        td POST /:githubUsername (e.g. /edshadi): 
-        td All read it later
+        td POST /laters, params: name and url
+        td Create a new read it later
       
+    
+    p Test form
+    
+    form(name="laters", action="/laters", method="post")
+      input(type="text", name="name", placeholder="Name")
+      input(type="url", name="url", placeholder="URL")
+      input(type="submit", value="Read it later")
