@@ -6,7 +6,29 @@ $(document).ready(function() {
 })
 
 
-},{"./read-later.jsx":5}],2:[function(require,module,exports){
+},{"./read-later.jsx":6}],2:[function(require,module,exports){
+var LaterStore = {
+  triggerChange: function(data) {
+    $(this).trigger('change', data);
+  },
+  onChange: function(callback) {
+    $(this).on('change', callback);
+  },
+  all: function() {
+    $.ajax({
+      url: 'http://localhost:3000/laters',
+      type: 'GET'
+    })
+    .done(function(response) {
+      this.triggerChange(response);
+    }.bind(this))
+  }
+}
+
+module.exports = LaterStore;
+
+
+},{}],3:[function(require,module,exports){
 var Header = React.createClass({displayName: "Header",
 
   render: function() {
@@ -26,7 +48,7 @@ var Header = React.createClass({displayName: "Header",
 module.exports = Header;
 
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 var Later = React.createClass({displayName: "Later",
 
   render: function() {
@@ -34,7 +56,7 @@ var Later = React.createClass({displayName: "Later",
       React.createElement("div", {className: "col-md-3 portfolio-item"}, 
         React.createElement("a", {href: "#"}, 
           React.createElement("img", {className: "img-responsive", src: "http://thecatapi.com/api/images/get?format=src&type=gif", alt: ""}), 
-          React.createElement("span", null, this.props.name)
+          React.createElement("span", null, this.props.later.name)
         )
       )
     );
@@ -45,16 +67,15 @@ var Later = React.createClass({displayName: "Later",
 module.exports = Later;
 
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var Later = require('./later.jsx');
 
 var Laters = React.createClass({displayName: "Laters",
 
   render: function() {
-    var laters = [];
-    for (var i = this.props.count-1; i >= 0; i--) {
-      laters.push(React.createElement(Later, {key: Math.random(), name: "Later"+i}))
-    };
+    var laters = Object.keys(this.props.laters).map(function(laterName) {
+      return(React.createElement(Later, {key: laterName, later: this.props.laters[laterName]}))
+    }.bind(this));
     return (
       React.createElement("div", {className: "row"}, 
         laters
@@ -67,18 +88,28 @@ var Laters = React.createClass({displayName: "Laters",
 module.exports = Laters;
 
 
-},{"./later.jsx":3}],5:[function(require,module,exports){
+},{"./later.jsx":4}],6:[function(require,module,exports){
 var Header = require('./header.jsx');
-var Laters = require('./laters.jsx')
+var Laters = require('./laters.jsx');
+var LaterStore = require('../js/later-store');
 
 var ReadLater = React.createClass({displayName: "ReadLater",
-
+  getInitialState: function() {
+    return {
+      laters: []
+    };
+  },
+  componentDidMount: function() {
+    LaterStore.onChange(function(e, data) {
+      this.setState({ laters: data })
+    }.bind(this))
+    LaterStore.all();
+  },
   render: function() {
     return (
       React.createElement("div", {className: "read-later"}, 
         React.createElement(Header, null), 
-        React.createElement(Laters, {count: 4}), 
-        React.createElement(Laters, {count: 4})
+        React.createElement(Laters, {laters: this.state.laters})
       )
     );
   }
@@ -88,4 +119,4 @@ var ReadLater = React.createClass({displayName: "ReadLater",
 module.exports = ReadLater;
 
 
-},{"./header.jsx":2,"./laters.jsx":4}]},{},[1]);
+},{"../js/later-store":2,"./header.jsx":3,"./laters.jsx":5}]},{},[1]);

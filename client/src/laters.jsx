@@ -3,10 +3,9 @@ var Later = require('./later.jsx');
 var Laters = React.createClass({
 
   render: function() {
-    var laters = [];
-    for (var i = this.props.count-1; i >= 0; i--) {
-      laters.push(<Later key={Math.random()} name={"Later"+i} />)
-    };
+    var laters = Object.keys(this.props.laters).map(function(laterName) {
+      return(<Later key={laterName} later={this.props.laters[laterName]} />)
+    }.bind(this));
     return (
       <div className="row">
         {laters}
