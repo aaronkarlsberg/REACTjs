@@ -30,7 +30,7 @@ gulp.task('js', ['clean'], function() {
 
 // Rerun tasks whenever a file changes.
 gulp.task('watch', function() {
-  gulp.watch(paths.js, ['jsx']);
+  gulp.watch(paths.js, ['js']);
 });
 
 // The default task (called when we run `gulp` from cli)
