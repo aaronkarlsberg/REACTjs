@@ -8,15 +8,9 @@ var ReadLater = React.createClass({
     return (
       <div className="read-later">
         <Header />
-        <div className="row">
-          <Laters count={4}/>
-        </div>
-
-        <div className="row">
-          <Laters count={4}/>
-        </div>
-
-    </div>
+        <Laters count={4}/>
+        <Laters count={4}/>
+      </div>
     );
   }
 

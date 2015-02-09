@@ -6,10 +6,10 @@ var Laters = React.createClass({
   render: function() {
     var laters = [];
     for (var i = this.props.count-1; i >= 0; i--) {
-      laters.push(<Later name={"Later"+i} />)
+      laters.push(<Later key={Math.random()} name={"Later"+i} />)
     };
     return (
-      <div className="laters">
+      <div className="row">
         {laters}
       </div>
     );

@@ -59,10 +59,10 @@ var Laters = React.createClass({displayName: "Laters",
   render: function() {
     var laters = [];
     for (var i = this.props.count-1; i >= 0; i--) {
-      laters.push(React.createElement(Later, {name: "Later"+i}))
+      laters.push(React.createElement(Later, {key: Math.random(), name: "Later"+i}))
     };
     return (
-      React.createElement("div", {className: "laters"}, 
+      React.createElement("div", {className: "row"}, 
         laters
       )
     );
@@ -84,15 +84,9 @@ var ReadLater = React.createClass({displayName: "ReadLater",
     return (
       React.createElement("div", {className: "read-later"}, 
         React.createElement(Header, null), 
-        React.createElement("div", {className: "row"}, 
-          React.createElement(Laters, {count: 4})
-        ), 
-
-        React.createElement("div", {className: "row"}, 
-          React.createElement(Laters, {count: 4})
-        )
-
-    )
+        React.createElement(Laters, {count: 4}), 
+        React.createElement(Laters, {count: 4})
+      )
     );
   }
 
