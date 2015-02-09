@@ -1,4 +1,3 @@
-var React = require('react');
 var Header = require('./header.jsx');
 var Laters = require('./laters.jsx')
 

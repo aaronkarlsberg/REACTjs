@@ -1,5 +1,3 @@
-var React = require('react');
-
 var Later = React.createClass({
 
   render: function() {

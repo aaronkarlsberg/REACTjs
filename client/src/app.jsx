@@ -1,4 +1,3 @@
-var React = require('react')
 var ReadLater = require('./read-later.jsx')
 
 $(document).ready(function() {

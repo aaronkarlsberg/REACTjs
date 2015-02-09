@@ -1,4 +1,3 @@
-var React = require('react');
 var Later = require('./later.jsx');
 
 var Laters = React.createClass({
