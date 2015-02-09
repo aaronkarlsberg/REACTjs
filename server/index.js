@@ -26,13 +26,14 @@ app.get('/laters', function (req, res) {
 app.post('/laters', function (req, res) {
   var data = {};
   data[req.body.name] = {
+    name: req.body.name,
     url: req.body.url
   };
   fb.update(data, function(error) {
     if (error) {
       res.send('Failure');
     } else {
-      res.send('Success');
+      res.send(data);
     }
   });
 })

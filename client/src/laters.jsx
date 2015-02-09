@@ -3,8 +3,8 @@ var Later = require('./later.jsx');
 var Laters = React.createClass({
 
   render: function() {
-    var laters = Object.keys(this.props.laters).map(function(laterName) {
-      return(<Later key={laterName} later={this.props.laters[laterName]} />)
+    var laters = this.props.laters.map(function(later) {
+      return(<Later key={later.name} later={later} />)
     }.bind(this));
     return (
       <div className="row">

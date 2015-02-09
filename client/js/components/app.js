@@ -6,13 +6,23 @@ $(document).ready(function() {
 })
 
 
-},{"./read-later.jsx":6}],2:[function(require,module,exports){
+},{"./read-later.jsx":7}],2:[function(require,module,exports){
+var _laters = {};
 var LaterStore = {
+  laters: function() {
+    return _laters;
+  },
   triggerChange: function(data) {
     $(this).trigger('change', data);
   },
   onChange: function(callback) {
     $(this).on('change', callback);
+  },
+  new: function() {
+    return {
+      name: null,
+      url: null
+    }
   },
   all: function() {
     $.ajax({
@@ -20,7 +30,21 @@ var LaterStore = {
       type: 'GET'
     })
     .done(function(response) {
-      this.triggerChange(response);
+      _laters = Object.keys(response).map(function(name) {
+        return response[name];
+      });
+      this.triggerChange();
+    }.bind(this))
+  },
+  create: function(data) {
+    $.ajax({
+      url: 'http://localhost:3000/laters',
+      type: 'POST',
+      data: data
+    })
+    .done(function(response) {
+      _laters.unshift(response[data.name]);
+      this.triggerChange();
     }.bind(this))
   }
 }
@@ -49,6 +73,29 @@ module.exports = Header;
 
 
 },{}],4:[function(require,module,exports){
+var LaterStore = require('../js/later-store');
+
+var LaterForm = React.createClass({displayName: "LaterForm",
+
+  render: function() {
+    var options = {
+      onSubmit: this.createLater,
+      url: {type: 'url'}
+    }
+    return (
+      React.createElement(FormFor, {object: LaterStore.new(), options: options, errors: []})
+    );
+  },
+  createLater: function(data) {
+    LaterStore.create(data);
+  }
+
+});
+
+module.exports = LaterForm;
+
+
+},{"../js/later-store":2}],5:[function(require,module,exports){
 var Later = React.createClass({displayName: "Later",
 
   render: function() {
@@ -67,14 +114,14 @@ var Later = React.createClass({displayName: "Later",
 module.exports = Later;
 
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var Later = require('./later.jsx');
 
 var Laters = React.createClass({displayName: "Laters",
 
   render: function() {
-    var laters = Object.keys(this.props.laters).map(function(laterName) {
-      return(React.createElement(Later, {key: laterName, later: this.props.laters[laterName]}))
+    var laters = this.props.laters.map(function(later) {
+      return(React.createElement(Later, {key: later.name, later: later}))
     }.bind(this));
     return (
       React.createElement("div", {className: "row"}, 
@@ -88,11 +135,11 @@ var Laters = React.createClass({displayName: "Laters",
 module.exports = Laters;
 
 
-},{"./later.jsx":4}],6:[function(require,module,exports){
+},{"./later.jsx":5}],7:[function(require,module,exports){
 var Header = require('./header.jsx');
 var Laters = require('./laters.jsx');
 var LaterStore = require('../js/later-store');
-
+var LaterForm = require('./later-form.jsx')
 var ReadLater = React.createClass({displayName: "ReadLater",
   getInitialState: function() {
     return {
@@ -101,7 +148,7 @@ var ReadLater = React.createClass({displayName: "ReadLater",
   },
   componentDidMount: function() {
     LaterStore.onChange(function(e, data) {
-      this.setState({ laters: data })
+      this.setState({ laters: LaterStore.laters() })
     }.bind(this))
     LaterStore.all();
   },
@@ -109,6 +156,7 @@ var ReadLater = React.createClass({displayName: "ReadLater",
     return (
       React.createElement("div", {className: "read-later"}, 
         React.createElement(Header, null), 
+        React.createElement(LaterForm, null), 
         React.createElement(Laters, {laters: this.state.laters})
       )
     );
@@ -119,4 +167,4 @@ var ReadLater = React.createClass({displayName: "ReadLater",
 module.exports = ReadLater;
 
 
-},{"../js/later-store":2,"./header.jsx":3,"./laters.jsx":5}]},{},[1]);
+},{"../js/later-store":2,"./header.jsx":3,"./later-form.jsx":4,"./laters.jsx":6}]},{},[1]);
